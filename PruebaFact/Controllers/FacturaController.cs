@@ -27,12 +27,9 @@ namespace PruebaFact.Controllers
             string busquedaEstablecimiento,
             int? page)
         {
-            if (sortOrder == null)
-                sortOrder = "date_desc";
-
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NumeroFacturaSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.FechaEmisionSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.FechaEmisionSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "";
+            ViewBag.NumeroFacturaSortParm = sortOrder == "id" ? "id_desc" : "id";
 
             if (busquedaNumeroFactura != null || busquedaEstablecimiento != null)
             {
@@ -58,17 +55,17 @@ namespace PruebaFact.Controllers
 
             switch (sortOrder)
             {
-                case "name_desc":
+                case "id":
+                    facturas = facturas.OrderBy(s => s.ID);
+                    break;
+                case "id_desc":
                     facturas = facturas.OrderByDescending(s => s.ID);
                     break;
                 case "Date":
                     facturas = facturas.OrderBy(s => s.FechaEmision);
                     break;
-                case "date_desc":
-                    facturas = facturas.OrderByDescending(s => s.FechaEmision);
-                    break;
                 default:
-                    facturas = facturas.OrderBy(s => s.ID);
+                    facturas = facturas.OrderByDescending(s => s.FechaEmision);
                     break;
             }
 
@@ -269,7 +266,7 @@ namespace PruebaFact.Controllers
 
         private void GuiasAsignadasData(int facturaID)
         {
-            var listaGuias = db.Guias.Where(s => s.Factura == null || s.Factura.ID == facturaID);
+            var listaGuias = db.Guias.Where(s => s.Factura == null || s.Factura.ID == facturaID).OrderByDescending(s => s.FechaEnvio);
             var viewModel = new List<GuiaAsignadaData>();
             foreach (var guia in listaGuias)
             {

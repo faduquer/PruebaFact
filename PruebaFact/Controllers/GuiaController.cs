@@ -26,14 +26,11 @@ namespace PruebaFact.Controllers
             string busquedaIdFactura, 
             int? page)
         {
-
-            if (sortOrder == null)
-                sortOrder = "FechaEnvio_desc";
-
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NumeroGuiaSortParm = String.IsNullOrEmpty(sortOrder) ? "NumeroGuia_desc" : "";
-            ViewBag.FechaEnvioSortParm = sortOrder == "FechaEnvio" ? "FechaEnvio_desc" : "FechaEnvio";
+            ViewBag.FechaEnvioSortParm = String.IsNullOrEmpty(sortOrder) ? "FechaEnvio" : "";
+            ViewBag.NumeroGuiaSortParm = sortOrder == "NumeroGuia" ? "NumeroGuia_desc" : "NumeroGuia";
             ViewBag.IdFacturaSortParm = sortOrder == "IdFactura" ? "IdFactura_desc" : "IdFactura";
+
 
             if (busquedaNumeroGuia != null || busquedaIdFactura != null)
             {
@@ -59,14 +56,11 @@ namespace PruebaFact.Controllers
 
             switch (sortOrder)
             {
+                case "NumeroGuia":
+                    guias = guias.OrderBy(s => s.NumeroGuía);
+                    break;
                 case "NumeroGuia_desc":
                     guias = guias.OrderByDescending(s => s.NumeroGuía);
-                    break;
-                case "FechaEnvio":
-                    guias = guias.OrderBy(s => s.FechaEnvio);
-                    break;
-                case "FechaEnvio_desc":
-                    guias = guias.OrderByDescending(s => s.FechaEnvio);
                     break;
                 case "IdFactura":
                     guias = guias.OrderBy(s => s.Factura.ID);
@@ -74,8 +68,11 @@ namespace PruebaFact.Controllers
                 case "IdFactura_desc":
                     guias = guias.OrderByDescending(s => s.Factura.ID);
                     break;
+                case "FechaEnvio":
+                    guias = guias.OrderBy(s => s.FechaEnvio);
+                    break;
                 default:
-                    guias = guias.OrderBy(s => s.NumeroGuía);
+                    guias = guias.OrderByDescending(s => s.FechaEnvio);
                     break;
             }
 

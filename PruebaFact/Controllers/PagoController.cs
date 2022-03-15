@@ -54,14 +54,14 @@ namespace PruebaFact.Controllers
 
             switch (sortOrder)
             {
-                case "idpago":
-                    pagos = pagos.OrderBy(s => s.ID);
-                    break;
                 case "idfactura":
                     pagos = pagos.OrderBy(s => s.Factura.ID);
                     break;
                 case "idfactura_desc":
                     pagos = pagos.OrderByDescending(s => s.Factura.ID);
+                    break;
+                case "idpago":
+                    pagos = pagos.OrderBy(s => s.ID);
                     break;
                 default:
                     pagos = pagos.OrderByDescending(s => s.ID);

@@ -12,7 +12,7 @@ namespace PruebaFact.DAL
         {
             var facturas = new List<Factura>
             {
-                new Factura{ Establecimiento="Es1", PuntoEmision="Pn1", Secuencial=1, FechaEmision=DateTime.Parse("2022-03-14"), Subtotal=152.15M, Impuesto=18.26M, Total=170.41M },
+                new Factura{ Establecimiento="Es1", PuntoEmision="Pn1", Secuencial=1, FechaEmision=DateTime.Parse("2022-03-13"), Subtotal=152.15M, Impuesto=18.26M, Total=170.41M },
                 new Factura{ Establecimiento="Es2", PuntoEmision="Pn2", Secuencial=1, FechaEmision=DateTime.Parse("2022-03-14"), Subtotal=250.23M, Impuesto=30.03M, Total=280.26M },
             };
             facturas.ForEach(s => context.Facturas.Add(s));
