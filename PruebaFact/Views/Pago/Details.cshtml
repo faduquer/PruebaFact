@@ -1,0 +1,44 @@
+﻿@model PruebaFact.Models.Pago
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h3>Detalle Pago</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoPago)
+        </dt>
+
+        <dd>
+            @Html.ActionLink(" " + Model.TipoPago, "Edit", new { id = Model.ID }, new { @class = "glyphicon glyphicon-pencil" })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+
+        @if (Model.Factura != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Factura.ID)
+            </dt>
+
+            <dd>
+
+                @Html.ActionLink(" " + Model.Factura.ID.ToString(), "Details", "Factura", new { id = Model.Factura.ID }, new { @class = "glyphicon glyphicon-eye-open" })
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })
+</p>

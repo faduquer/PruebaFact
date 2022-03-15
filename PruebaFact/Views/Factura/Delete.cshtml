@@ -1,0 +1,78 @@
+﻿@model PruebaFact.Models.Factura
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Factura</h2>
+
+<h3>¿Seguro quieres eliminar esta Factura?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Establecimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Establecimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PuntoEmision)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PuntoEmision)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Secuencial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Secuencial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaEmision)
+        </dt>
+
+        <dd>
+            @Model.FechaEmision.ToString("dd-MM-yyyy")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Impuesto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Impuesto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-primary" />
+            @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })
+        </div>
+    }
+</div>

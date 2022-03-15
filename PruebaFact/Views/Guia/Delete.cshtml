@@ -1,0 +1,126 @@
+﻿@model PruebaFact.Models.Guia
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Guía</h2>
+
+<h3>¿Seguro quieres eliminar esta Guía?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroGuía)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroGuía)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaEnvio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaEnvio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaisOrigen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaisOrigen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreRemitente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreRemitente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DireccionRemitente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DireccionRemitente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefonoRemitente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelefonoRemitente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailRemitente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailRemitente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaisDestino)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaisDestino)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreDestinatario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreDestinatario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DireccionDestinatario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DireccionDestinatario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefonoDestinatario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelefonoDestinatario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailDestinatario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailDestinatario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-primary" />
+            @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })
+        </div>
+    }
+</div>

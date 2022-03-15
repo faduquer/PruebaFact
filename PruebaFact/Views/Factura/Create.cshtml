@@ -1,0 +1,337 @@
+﻿@model PruebaFact.Models.Factura
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h3>Agregar Factura</h3>
+
+<link href="~/Content/sweetalert2.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert2.js"></script>
+<script src="~/Scripts/jquery.sortElements.js"></script>
+
+@*@using (Html.BeginForm()) *@
+@using (Html.BeginForm("Create", "Factura", FormMethod.Post, new { id = "FacturaForm", name = "FacturaForm", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Establecimiento, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Establecimiento, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Establecimiento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PuntoEmision, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PuntoEmision, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PuntoEmision, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Secuencial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Secuencial, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Secuencial, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaEmision, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaEmision, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaEmision, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Subtotal, new { htmlAttributes = new { @class = "form-control", @id = "subtotal", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Subtotal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Impuesto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Impuesto, new { htmlAttributes = new { @class = "form-control", @id = "impuesto", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <table class="table table-bordered table-hover table-sm" id="tablaGuias">
+                    <thead>
+                        <tr>
+                            <th colspan="5">
+                                <!--<button id="agregarNuevaGuia" class="btn btn-link">Agregar una nueva Guía!</button>-->
+                                <a href="@Url.Action("Create", "Guia")" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <strong>Agregar una nueva Guía</strong>
+                                </a>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th  style="cursor: pointer;" id="g_Id_header">Id</th>
+                            <th  style="cursor: pointer;" id="g_NroGuia_header">Nro Guía</th>
+                            <th  style="cursor: pointer;" id="g_Fecha_header">Fecha Envío</th>
+                            <th  style="cursor: pointer;" id="g_Total_header">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            List<PruebaFact.ViewModels.GuiaAsignadaData> guias = ViewBag.Guias;
+                            foreach (var guia in guias)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"
+                                               name="guiasSeleccionadas"
+                                               value="@guia.ID"
+                                               total="@guia.Total"
+                                               @(Html.Raw(guia.Asignada ? "checked=\"checked\"" : "")) />
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(" " + @guia.ID, "Edit", "Guia", new { id = @guia.ID }, new { @class = "glyphicon glyphicon-pencil" })
+                                    </td>
+                                    <td>
+                                        @guia.NumeroGuía
+                                    </td>
+                                    <td>
+                                        @guia.FechaEnvio.ToString("dd-MM-yyyy")
+                                    </td>
+                                    <td>
+                                        @guia.Total
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <table class="table table-bordered table-hover table-sm" id="tablaPagos">
+                    <thead>
+                        <tr>
+                            <th colspan="4">
+                                <!--<button id="agregarNuevoPago" class="btn btn-link">Agregar un nuevo Pago!</button>-->
+                                    <a href="@Url.Action("Create", "Pago")" class="btn btn-primary">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <strong>Agregar un nuevo Pago</strong>
+                                    </a>
+                            </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th style="cursor: pointer;" id="p_Id_header">Id</th>
+                                <th style="cursor: pointer;" id="p_TipoPago_header">Tipo Pago</th>
+                                <th style="cursor: pointer;" id="p_Valor_header">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                List<PruebaFact.ViewModels.PagoAsignadoData> pagos = ViewBag.Pagos;
+                                foreach (var pago in pagos)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox"
+                                                   name="pagosSeleccionados"
+                                                   value="@pago.ID"
+                                                   valor="@pago.Valor"
+                                                   @(Html.Raw(pago.Asignado ? "checked=\"checked\"" : "")) />
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(" " + @pago.ID, "Edit", "Pago", new { id = @pago.ID }, new { @class = "glyphicon glyphicon-pencil" })
+                                        </td>
+                                        <td>
+                                            @pago.TipoPago
+                                        </td>
+                                        <td>
+                                            @pago.Valor
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="btnSubmit" value="Guardar" class="btn btn-primary" />
+                    @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })
+                </div>
+            </div>
+        </div>
+    }
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#btnSubmit').click(function () {
+                    if (validTotalFacturaContraPagos()) {
+                        if ($("#FacturaForm").valid()) {
+                            $('#FacturaForm').submit();
+                        }
+                        else {
+                            return false;
+                        }
+                    } else {
+                        Swal.fire({
+                            title: '',
+                            text: 'Total de Pagos no corresponden al total de Factura',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
+                        });
+                        return false;
+                    }
+                });
+
+                $("#FacturaForm").on("submit", function (event) {
+                    event.preventDefault();
+                    $('#btnSubmit').attr('disabled', 'disabled');
+                    var url = $(this).attr("action");
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        success: function (response) {
+                            Swal.fire({
+                                title: '',
+                                text: JSON.stringify(response),
+                                icon: 'success',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false
+                            }).then(() => {
+                                window.location.href = '/Factura';
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                title: '',
+                                text: 'Error al crear la Factura',
+                                icon: 'error',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false
+                            });
+                        },
+                        complete: function () {
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    })
+                });
+
+                function calcularTotal() {
+                    let subtotal = 0;
+                    let impuesto = 0;
+                    let total = 0;
+
+                    var gSeleccionadas = $('input[name=guiasSeleccionadas]:checked');
+                    for (var i = 0; i < gSeleccionadas.length; i++)
+                        subtotal += gSeleccionadas[i].getAttribute("total") * 1;
+                    subtotal = parseFloat(subtotal).toFixed(2);
+                    $('#subtotal').val(subtotal);
+
+                    impuesto = subtotal * 12 / 100;
+                    impuesto = parseFloat(impuesto).toFixed(2);
+                    $('#impuesto').val(impuesto);
+
+                    total = subtotal * 1 + impuesto * 1;
+                    total = parseFloat(total).toFixed(2);
+                    $('#total').val(total);
+                }
+
+                calcularTotal();
+
+                $(":checkbox").change(function () {
+                    calcularTotal();
+                });
+
+                function validTotalFacturaContraPagos() {
+                    let total = $('#total').val();
+                    let totalPago = 0;
+                    if (isNaN(total) || total == '') {
+                        total = parseFloat(0).toFixed(2);
+                    }
+                    total = parseFloat(total).toFixed(2);
+
+                    var pSeleccionados = $('input[name=pagosSeleccionados]:checked');
+                    for (var i = 0; i < pSeleccionados.length; i++) {
+                        totalPago += pSeleccionados[i].getAttribute("valor") * 1;
+                    }
+                    totalPago = parseFloat(totalPago).toFixed(2);
+
+                    return (totalPago == total);
+                }
+
+                $('#g_Id_header, #g_NroGuia_header, #g_Fecha_header, #g_Total_header')
+                    .wrapInner('<span title="sort this column"/>')
+                    .each(function () {
+                        var th = $(this),
+                            thIndex = th.index(),
+                            inverse = false;
+                        th.click(function () {
+                            $('#tablaGuias').find('td').filter(function () {
+                                return $(this).index() === thIndex;
+                            }).sortElements(function (a, b) {
+                                return $.text([a]) > $.text([b]) ?
+                                    inverse ? -1 : 1
+                                    : inverse ? 1 : -1;
+                            }, function () {
+                                return this.parentNode;
+                            });
+                            inverse = !inverse;
+                        });
+                    });
+
+                $('#p_Id_header, #p_TipoPago_header, #p_Valor_header')
+                    .wrapInner('<span title="sort this column"/>')
+                    .each(function () {
+                        var th = $(this),
+                            thIndex = th.index(),
+                            inverse = false;
+                        th.click(function () {
+                            $('#tablaPagos').find('td').filter(function () {
+                                return $(this).index() === thIndex;
+                            }).sortElements(function (a, b) {
+                                return $.text([a]) > $.text([b]) ?
+                                    inverse ? -1 : 1
+                                    : inverse ? 1 : -1;
+                            }, function () {
+                                return this.parentNode;
+                            });
+                            inverse = !inverse;
+                        });
+                    });
+            });
+        </script>
+        @Scripts.Render("~/bundles/jqueryval")
+    }

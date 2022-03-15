@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<PruebaFact.Models.Pago>
+@using PagedList.Mvc;
+@using System.Web;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Pagos</h2>
+
+<p>
+    <a href="@Url.Action("Create", "Pago")" class="btn btn-primary">
+        <i class="glyphicon glyphicon-plus"></i>
+        <strong>Agregar</strong>
+    </a>
+</p>
+@using (Html.BeginForm("Index", "Pago", FormMethod.Get))
+{
+    <p>
+        Buscar por pago: @Html.TextBox("busquedaIdPago", ViewBag.actgualIdPago as string)
+        Buscar por Factura: @Html.TextBox("busquedaIdFactura", ViewBag.actgualIdFactura as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().ID).ToHtmlString()), "Index", new { sortOrder = ViewBag.IdPagoSortParm, actgualIdPago = ViewBag.actgualIdPago, actgualIdFactura = ViewBag.actgualIdFactura })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TipoPago)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Valor)
+        </th>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().Factura.ID).ToHtmlString()), "Index", new { sortOrder = ViewBag.IdFacturaSortParm, actgualIdPago = ViewBag.actgualIdPago, actgualIdFactura = ViewBag.actgualIdFactura })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.ActionLink(" " + item.ID, "Edit", new { id = item.ID }, new { @class = "glyphicon glyphicon-pencil" })
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TipoPago)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Valor)
+    </td>
+    <td>
+        @if (item.Factura != null)
+        {
+            @Html.ActionLink(item.Factura.ID.ToString(), "Details", "Factura", new { id = item.Factura.ID }, null)
+        }
+    </td>
+    <td>
+        @Html.ActionLink(" ", "Details", new { id = item.ID }, new { @class = "glyphicon glyphicon-eye-open" })
+        @*@Html.ActionLink(" ", "Delete", new { id = item.ID }, new { @class = "glyphicon glyphicon-trash", onclick = "return confirm('Are you sure you want to remove " + @item.ID + " to list ?');" })*@
+        @Html.ActionLink(" ", "Delete", new { id = item.ID }, new { @class = "glyphicon glyphicon-trash" })
+    </td>
+</tr>
+    }
+</table>
+<br />
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, actgualIdPago = ViewBag.actgualIdPago, actgualIdFactura = ViewBag.actgualIdFactura }))

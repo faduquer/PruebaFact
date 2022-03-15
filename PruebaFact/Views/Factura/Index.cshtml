@@ -1,0 +1,108 @@
+﻿@model PagedList.IPagedList<PruebaFact.Models.Factura>
+@using PagedList.Mvc;
+@using System.Web;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Facturas</h3>
+
+<p>
+    <a href="@Url.Action("Create", "Factura")" class="btn btn-primary">
+        <i class="glyphicon glyphicon-plus"></i>
+        <strong>Agregar</strong>
+    </a>
+</p>
+@using (Html.BeginForm("Index", "Factura", FormMethod.Get))
+{
+    <p>
+        Buscar por Factura: @Html.TextBox("busquedaNumeroFactura", ViewBag.actgualNumeroFactura as string)
+        Buscar por Establecimiento: @Html.TextBox("busquedaEstablecimiento", ViewBag.actgualEstablecimiento as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().ID).ToHtmlString()), "Index", new { sortOrder = ViewBag.NumeroFacturaSortParm, actgualNumeroFactura = ViewBag.actgualNumeroFactura, actgualEstablecimiento = ViewBag.actgualEstablecimiento })
+        </th>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().FechaEmision).ToHtmlString()), "Index", new { sortOrder = ViewBag.FechaEmisionSortParm, actgualNumeroFactura = ViewBag.actgualNumeroFactura, actgualEstablecimiento = ViewBag.actgualEstablecimiento })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Establecimiento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().PuntoEmision)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Secuencial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Subtotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Impuesto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().GuiasAsocioadas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().PagosAsocioados)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(" " + item.ID, "Edit", new { id = item.ID }, new { @class = "glyphicon glyphicon-pencil" })
+            </td>
+            <td>
+                @item.FechaEmision.ToString("dd-MM-yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Establecimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PuntoEmision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Secuencial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subtotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Impuesto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <th>
+                @Html.DisplayFor(model => item.GuiasAsocioadas)
+            </th>
+            <th>
+                @Html.DisplayFor(model => item.PagosAsocioados)
+            </th>
+            <td>
+                @Html.ActionLink(" ", "Details", new { id = item.ID }, new { @class = "glyphicon glyphicon-eye-open" })
+                @*
+        @Html.ActionLink(" ", "Delete", new { id = item.ID }, new { @class = "glyphicon glyphicon-trash", onclick = "return confirm('Are you sure you want to remove " + @item.ID + " to list ?');" })
+                *@
+                @Html.ActionLink(" ", "Delete", new { id = item.ID }, new { @class = "glyphicon glyphicon-trash" })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, actgualNumeroFactura = ViewBag.actgualNumeroFactura, actgualEstablecimiento = ViewBag.actgualEstablecimiento }))

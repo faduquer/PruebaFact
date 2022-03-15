@@ -1,0 +1,106 @@
+﻿@model PruebaFact.Models.Pago
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h3>Editar Pago</h3>
+
+<link href="~/Content/sweetalert2.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert2.js"></script>
+
+@*@using (Html.BeginForm()) *@
+@using (Html.BeginForm("Edit", "Pago", FormMethod.Post, new { id = "PagoEditForm", name = "PagoEditForm", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoPago, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.TipoPago, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TipoPago, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Valor, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Valor, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Valor, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="btnPagoEditSubmit" value="Guardar" class="btn btn-primary" />
+                @*@Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })*@
+                <button type="button" class="btn btn-info" onclick="history.back();">Regresar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnPagoEditSubmit').click(function () {
+                if ($("#PagoEditForm").valid()) {
+                    $('#PagoEditForm').submit();
+                }
+                else {
+                    return false;
+                }
+            });
+
+            $("#PagoEditForm").on("submit", function (event) {
+                event.preventDefault();
+                $('#btnPagoEditSubmit').attr('disabled', 'disabled');
+                var url = $(this).attr("action");
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        Swal.fire({
+                            title: '',
+                            text: JSON.stringify(response),
+                            icon: 'success',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
+                        }).then(() => {
+                            window.location.href = document.referrer.replace(window.location.origin, '');
+                        });
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                            title: '',
+                            text: 'Error al editar el Pago',
+                            icon: 'error',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
+                        });
+                    },
+                    complete: function () {
+                        $('#btnPagoEditSubmit').removeAttr('disabled');
+                    }
+                })
+            });
+
+            function regresar() {
+                alert(document.referrer); return false;
+            }
+
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

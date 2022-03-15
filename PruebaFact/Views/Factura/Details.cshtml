@@ -1,0 +1,153 @@
+﻿@model PruebaFact.Models.Factura
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h3>Detalle Factura</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Establecimiento)
+        </dt>
+
+        <dd>
+            @Html.ActionLink(" " + Model.Establecimiento, "Edit", new { id = Model.ID }, new { @class = "glyphicon glyphicon-pencil" })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PuntoEmision)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PuntoEmision)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Secuencial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Secuencial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaEmision)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaEmision)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Impuesto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Impuesto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table table-bordered table-hover table-sm">
+    <caption><h3>Pagos</h3></caption>
+    
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => Model.Pagos.FirstOrDefault().TipoPago)</th>
+            <th>@Html.DisplayNameFor(m => Model.Pagos.FirstOrDefault().Valor)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Pagos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <th>
+                @Html.DisplayFor(model => @Model.Total)
+            </th>
+        </tr>
+
+    </tbody>
+</table>
+
+<table class="table table-bordered table-hover table-sm">
+    <caption><h3>Guías</h3></caption>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().NumeroGuía)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().FechaEnvio)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().PaisOrigen)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().NombreRemitente)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().PaisDestino)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().NombreDestinatario)</th>
+            <th>@Html.DisplayNameFor(m => Model.Guias.FirstOrDefault().Total)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Guias.OrderByDescending(s => s.FechaEnvio))
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroGuía)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEnvio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaisOrigen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreRemitente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaisDestino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreDestinatario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+        </tr>
+        }
+        <tr>
+            <td colspan="5"></td>
+            <th>
+                @Html.DisplayFor(model => @Model.Subtotal)
+            </th>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-info" })
+</p>
